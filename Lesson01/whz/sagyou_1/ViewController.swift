@@ -12,106 +12,112 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     
-    var operandStart: Int = 0
-    var operandEnd: Int = 0
-    var operandN: Int = 0
-    var resultG: Int = 0
-    var isEnd: Bool = false
-    var operatorFlag: String = ""
-    
+    var userIsInNumber: Bool = false
+    var operationG: String = ""
+    var countType: String = ""
+
     
     @IBAction func clear(_ sender: UIButton) {
         
         display.text = "0"
-        operandStart = 0
-        operandEnd = 0
-        operandN = 0
-        resultG = 0
-        isEnd = false
-        operatorFlag = ""
+        userIsInNumber = false
+        operationG = ""
+        countType = ""
     }
     
     
     @IBAction func countTap(_ sender: UIButton) {
         
-        if (isEnd && (operatorFlag != "")) {
-            display.text = resultG.description
-            resultG = 0;
+        let operation = sender.currentTitle!
+        operationG = ""
+        if userIsInNumber {
+            enter()
         }
-        isEnd = true
         
-        switch sender.currentTitle! {
+        switch operation {
+        case "×":
+            performOperation { $0 * $1 }
+            countType = "×"
+        case "÷":
+            performOperation { $1 / $0 }
+            countType = "÷"
         case "+":
-            operatorFlag = "+"
-        case "-":
-            operatorFlag = "-"
-        case "*":
-            operatorFlag = "*"
-        case "/":
-            operatorFlag = "/"
-        default:
-            operatorFlag = ""
-        }
-        print("operatorFlag: \(operatorFlag)")
-    }
-    
-    
-    @IBAction func resultTap(_ sender: UIButton) {
-        
-        if isEnd {
-            if ((operatorFlag == "/") && ((operandEnd == 0) || (operandN == 0))) {
-                print("Error: 除数不能为0")
-                return
-            }
-
-            display.text = resultG.description
-            print("操作开始: \(operandStart)")
-            print("操作符: \(operatorFlag)")
-            print("操作结束: \(operandEnd)")
-            print("计算结果: \(resultG)")
+            performOperation { $0 + $1 }
+            countType = "+"
+        case "−":
+            performOperation { $1 - $0 }
+            countType = "−"
+        default: break
         }
     }
     
     
     @IBAction func onClick(_ sender: UIButton) {
         
-        if ((display.text == "0") || (isEnd && (operandEnd == 0))) {
-            display.text = ""
-        }
-        if operatorFlag == "" {
-            display.text = display.text! + sender.currentTitle!
+        // 获取Button上的数字
+        let digit = sender.currentTitle!
+        operationG = operationG + sender.currentTitle!
+        // 若已输入过数字，则直接往display中添加数字，否则直接显示新点击的数字
+        if userIsInNumber {
+            display.text = display.text! + digit
         } else {
-            display.text = sender.currentTitle!
+            display.text = digit
+            userIsInNumber = true
         }
-        
-        if isEnd {
-            operandN = operandN + operandEnd
-            operandEnd = NSString(string: display.text!).integerValue
-            saiCount()
-        } else {
-            operandStart = NSString(string: display.text!).integerValue
+    }
+
+    
+    func performOperation(operation: (Double,Double) -> Double){
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(),operandStack.removeLast())
+            enter()
         }
-        print("操作开始值: \(operandStart)")
-        print("操作中间值: \(operandN)")
-        print("操作结束值: \(operandEnd)")
     }
     
-    private func saiCount() {
-        
-        switch operatorFlag {
-        case "+":
-            resultG = operandStart + operandN + operandEnd
-        case "-":
-            resultG = operandStart - operandN - operandEnd
-        case "*":
-            resultG = operandStart * operandN * operandEnd
-        case "/":
-            if ((operandN != 0) && (operandEnd != 0)) {
-                resultG = operandStart / operandN / operandEnd
-            }
-        default:
-            resultG = 0
+    
+    private func performOperation(operation: (Double) -> Double){
+        if operandStack.count >= 1 {
+            displayValue = operation(operandStack.removeLast())
+            enter()
         }
     }
+    
+    var operandStack = Array<Double>()
+    
+    var displayValue: Double {
+        
+        get {
+            return (display.text! as NSString).doubleValue
+        }
+        set {
+            display.text = "\(Int(newValue))"
+            userIsInNumber = false
+        }
+    }
+    
+    
+    @IBAction func result(_ sender: Any) {
+
+        switch countType {
+        case "×":
+            display.text = String(Int((operationG as NSString).doubleValue * operandStack.removeLast()))
+        case "÷":
+            display.text = String(Int((operationG as NSString).doubleValue / operandStack.removeLast()))
+        case "+":
+            display.text = String(Int((operationG as NSString).doubleValue + operandStack.removeLast()))
+        case "−":
+            display.text = String(Int((operationG as NSString).doubleValue - operandStack.removeLast()))
+        default:
+            break
+        }
+    }
+    
+    func enter() {
+        
+        userIsInNumber = false
+        operandStack.append(displayValue)
+        print("operandStack的元素值：\(operandStack)")
+    }
+    
 }
 
