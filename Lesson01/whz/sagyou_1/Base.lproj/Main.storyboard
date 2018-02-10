@@ -167,7 +167,7 @@
                                     <action selector="countTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JpD-nT-GQK"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RD2-L3-TbR">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RD2-L3-TbR">
                                 <rect key="frame" x="296" y="329" width="46" height="39"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.76376988150000003" blue="0.1545537894" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -195,7 +195,7 @@
                                 <color key="backgroundColor" red="1" green="0.76376988148181502" blue="0.15455378940757281" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="/"/>
+                                <state key="normal" title="÷"/>
                                 <connections>
                                     <action selector="countTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ozM-Pl-vdG"/>
                                 </connections>
@@ -211,15 +211,15 @@
                                     <action selector="clear:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jaz-ry-1qB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AeB-i9-AZ8">
-                                <rect key="frame" x="296" y="502" width="46" height="37"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qd-nd-KuD">
+                                <rect key="frame" x="296" y="509" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.76376988150000003" blue="0.1545537894" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <state key="normal" title="="/>
                                 <connections>
-                                    <action selector="resultTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zs9-MV-Mi9"/>
+                                    <action selector="result:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aZT-l3-ApR"/>
                                 </connections>
                             </button>
                         </subviews>
