@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         if segue.identifier == "pushToTableView" {
             let theNextStructLibs = segue.destination as! TableViewController
             // 问题点 我想把structLibs传到tableViewControler 但好像传不过去 
-//            theNextStructLibs.structLibs = structLibs
+            theNextStructLibs.structLibs = structLibs
         }
     }
     

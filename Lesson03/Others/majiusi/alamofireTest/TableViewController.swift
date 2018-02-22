@@ -9,10 +9,10 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-    struct oneMoreTest:Decodable {
-        let name:String
-        let region:String
-    }
+//    struct oneMoreTest:Decodable {
+//        let name:String
+//        let region:String
+//    }
     var structLibs = [oneMoreTest]()
     
     override func viewDidLoad() {
