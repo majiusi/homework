@@ -13,14 +13,14 @@ import AlamofireImage
 class ViewController: UITableViewController {
     
     var articles:[articles] = []
-//    var url:String = ""
+    //    var url:String = ""
     override func viewDidLoad() {
         self.tableView.rowHeight = 200
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         request()
     }
-
+    
     private func request(){
         guard let url = URL(string: "https://newsapi.org/v2/top-headlines") else {return}
         let parameters:Parameters = [
@@ -45,10 +45,13 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "table", for: indexPath) as! ArticleCell
         cell.titleLabel.text = articles[indexPath.row].title
         cell.detailsLabel.text = articles[indexPath.row].description
-        let imageUrl = URL(string: articles[indexPath.row].urlToImage!)
-        Alamofire.request(imageUrl!).responseImage { (image) in
-            if let targetImage = image.result.value{
-                cell.newsImage.image = targetImage
+        if let urlToImage = articles[indexPath.row].urlToImage {
+            if let imageUrl = URL(string: urlToImage){
+                Alamofire.request(imageUrl).responseImage { (image) in
+                    if let targetImage = image.result.value{
+                        cell.newsImage.image = targetImage
+                    }
+                }
             }
         }
         cell.newsImage.image = UIImage()
@@ -57,9 +60,9 @@ class ViewController: UITableViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segue" {
-        guard let destination = segue.destination as? DetailViewController else { return }
-        guard let article = sender as? articles else { return }
-        destination.url = article.url
+            guard let destination = segue.destination as? DetailViewController else { return }
+            guard let article = sender as? articles else { return }
+            destination.url = article.url
         }
     }
     
