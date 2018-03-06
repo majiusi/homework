@@ -14,6 +14,7 @@
 		EF4D5E73204B755900FA14B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4D5E71204B755900FA14B4 /* LaunchScreen.storyboard */; };
 		EF4D5E7C204B79B100FA14B4 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF4D5E7B204B79B100FA14B4 /* Alamofire.framework */; };
 		EF4D5E7F204B8B2300FA14B4 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4D5E7E204B8B2300FA14B4 /* Model.swift */; };
+		EF51CE61204E6F00001B032E /* BaiduTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51CE60204E6F00001B032E /* BaiduTranslate.swift */; };
 		EF562F92204D8BF000073ED2 /* ObjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF562F91204D8BF000073ED2 /* ObjectTableViewController.swift */; };
 		EF562F94204D8BFF00073ED2 /* ColorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF562F93204D8BFF00073ED2 /* ColorTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		EF4D5E74204B755900FA14B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF4D5E7B204B79B100FA14B4 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		EF4D5E7E204B8B2300FA14B4 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		EF51CE60204E6F00001B032E /* BaiduTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaiduTranslate.swift; sourceTree = "<group>"; };
 		EF562F91204D8BF000073ED2 /* ObjectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectTableViewController.swift; sourceTree = "<group>"; };
 		EF562F93204D8BFF00073ED2 /* ColorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +75,7 @@
 				EF4D5E7E204B8B2300FA14B4 /* Model.swift */,
 				EF562F91204D8BF000073ED2 /* ObjectTableViewController.swift */,
 				EF562F93204D8BFF00073ED2 /* ColorTableViewController.swift */,
+				EF51CE60204E6F00001B032E /* BaiduTranslate.swift */,
 			);
 			path = ImageAnalysis;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF51CE61204E6F00001B032E /* BaiduTranslate.swift in Sources */,
 				EF562F92204D8BF000073ED2 /* ObjectTableViewController.swift in Sources */,
 				EF4D5E7F204B8B2300FA14B4 /* Model.swift in Sources */,
 				EF4D5E6B204B755900FA14B4 /* ViewController.swift in Sources */,

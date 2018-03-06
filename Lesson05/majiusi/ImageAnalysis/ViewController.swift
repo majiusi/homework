@@ -13,9 +13,16 @@ class ViewController: UIViewController {
     var tagsToDetailsPage: [String]?
     var colorsToDetailsPage: [PhotoColor]?
     
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var View2: UIView!
+    @IBOutlet weak var View1: UIView!
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.View1.layer.borderWidth = 1
+        self.View1.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        self.View2.layer.borderWidth = 1
+        self.View2.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -23,7 +30,7 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func chooseImage(_ sender: Any) {
+    @IBAction func chooseCamera(_ sender: Any) {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = false
@@ -31,8 +38,18 @@ class ViewController: UIViewController {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
             picker.sourceType = .camera
         }else{
-            picker.sourceType = .photoLibrary
+            let message = UIAlertController.init(title: "Error", message: "Can't Open your Camara", preferredStyle: .alert)
+            let action = UIAlertAction.init(title: "OK", style: .default, handler: nil)
+            message.addAction(action)
+            present(message, animated: true, completion: nil)
         }
+        present(picker, animated: true, completion: nil)
+    }
+    @IBAction func chooseImage(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = false
+        picker.sourceType = .photoLibrary
         present(picker, animated: true, completion: nil)
     }
     
@@ -82,8 +99,33 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    func downloadChineseTags(tags:[tags], completion:@escaping([String])->Void){
+        var name:String = ""
+        for tag in tags{
+            //百度翻译API
+            let baidu = BaiduTranslate()
+            if tag.confidence < 40{
+                return
+            }
+            let url = baidu.getURL(word: tag.tag)
+            
+            Alamofire.request(url, method: .get).responseJSON { (response) in
+                do{
+                    let jsonResult = try JSONDecoder().decode(translate.self, from: response.data!)
+                    name = (jsonResult.trans_result.first?.dst)!
+                    print(name)
+                    
+                }catch{
+                    print("Translation Error!")
+                }
+            }
+        }
+    }
+    
     func downloadTags(id:String, completion:@escaping ([String])->Void) {
         var tagsReturn = [String]()
+        
         Alamofire.request("http://api.imagga.com/v1/tagging",
                           parameters: ["content":id],
                           headers: ["Authorization": "Basic YWNjX2NlYzFiOTM1YTYwNDBiYjpkOWUxMmNjNmM5M2Q1ZTk3YTJiNzFlOGJkMGM2MmNiNQ=="]).responseJSON { (response) in
@@ -96,10 +138,15 @@ class ViewController: UIViewController {
                                 guard let tags = result.results.first?.tags else{
                                     return
                                 }
-                                tagsReturn = tags.flatMap({ dict in
-                                    return dict.tag
-                                })
                                 
+
+                                tagsReturn = tags.flatMap({ dict in
+                                        if dict.confidence > 40.0{
+                                        return dict.tag
+                                        }
+                                        return nil
+                                    }
+                                )
                                 completion(tagsReturn)
                                 
                             }catch{
@@ -107,7 +154,7 @@ class ViewController: UIViewController {
                             }
         }
         
-        completion(tagsReturn)
+//        completion(tagsReturn)
     }
     
     func downloadColors(id:String, completion:@escaping ([PhotoColor])->Void){
@@ -122,14 +169,6 @@ class ViewController: UIViewController {
                             }
                             do{
                                 let result = try JSONDecoder().decode(colors.self, from: response.data!)
-                                //let image_colors = result.results.first?.info.image_colors
-                                //for color in image_colors!{
-                                //let r = Int(color.r)
-                                //let g = Int(color.g)
-                                //let b = Int(color.b)
-                                //let name = color.closest_palette_color
-                                //let colorInfo = PhotoColor(red: r, green: g, blue: b, colorName: name)
-                                //colorsReturn.append(colorInfo)
                                 guard let image_colors = result.results.first?.info.image_colors else {
                                     return
                                 }
@@ -151,6 +190,10 @@ class ViewController: UIViewController {
                                 completion(colorsReturn)
                             }catch{
                                 print("Json 3 Decoder Error!")
+                                let alert = UIAlertController.init(title: "Error", message: "Server error, try again later", preferredStyle: .alert)
+                                let action = UIAlertAction.init(title: "OK", style: .default, handler: nil)
+                                alert.addAction(action)
+                                self.present(alert, animated: true, completion: nil)
                             }
         }
         
@@ -167,12 +210,16 @@ extension ViewController:UIImagePickerControllerDelegate{
         imageView.image = image
         upload(image: image, progressCompletion: { (progress) in
             print(progress)
+            self.progressView.progress = progress
         }) { (a, b) in
             self.tagsToDetailsPage = a
             print("\(a.count)")
             self.colorsToDetailsPage = b
             print("\(b.count)")
+            self.progressView.progress = 0.0
+            if (a.count != 0 && b.count != 0){
             self.performSegue(withIdentifier: "segue", sender: self)
+            }
         }
         dismiss(animated: true)
     }

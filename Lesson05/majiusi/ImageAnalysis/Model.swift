@@ -56,3 +56,10 @@ struct tags: Codable {
     let confidence: Float
     let tag: String
 }
+struct translate: Codable {
+    let trans_result : [trans_result]
+}
+struct trans_result: Codable {
+    let src:String
+    let dst:String
+}

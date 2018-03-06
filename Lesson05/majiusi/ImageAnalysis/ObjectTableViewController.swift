@@ -16,12 +16,14 @@ class ObjectTableViewController: UIViewController,UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ObjectCell", for: indexPath) as UITableViewCell
-//        cell.textLabel?.text = "我是第 \(indexPath.row) 个Cell"
+        
         cell.textLabel?.text = result[indexPath.row]
         return cell
     }
     
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40.0
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
