@@ -7,19 +7,55 @@
 //
 
 import Foundation
+import Alamofire
 
 class BaiduTranslate {
 // URL Sample    https://fanyi-api.baidu.com/api/trans/vip/translate?appid=20180306000131844&q=apple&from=en&to=zh&salt=1435660288&sign=053582b871f16236ce4b86cf72002a93
     func getURL(word:String) -> URL {
-        let first = "https://fanyi-api.baidu.com/api/trans/vip/translate?appid=20180306000131844&q=\(word)&from=auto&to=auto&salt=1435660288&sign="
+        let first = "https://fanyi-api.baidu.com/api/trans/vip/translate?appid=20180306000131844&from=auto&to=auto&salt=1435660288&sign="
         let second = "20180306000131844\(word)1435660288QRjrVKE2wmDirSJxRz5k".md5String
         let urlString = first + second
         let url = URL(string: urlString)
         return url!
     }
-    
+    func getURLs(words:[String]) -> [URL] {
+        var urls = [URL]()
+        for word in words{
+            urls.append(getURL(word: word))
+        }
+        return urls
+    }
+    func getURLsForTags(tags:[tags],level:Float) -> [URL] {
+        var words = [String]()
+        for tag in tags{
+            if tag.confidence > level{
+                words.append(tag.tag)
+            }else{
 
+            }
+        }
+        return getURLs(words: words)
+    }
+    func getCNTags(tags:[tags],level:Float,completion:@escaping ([String]) -> Void) {
+        let urls = getURLsForTags(tags: tags, level: level)
+        let count = urls.count
+        for i in 0..<count {
+            Alamofire.request(urls[i], method: .get, parameters: ["q":tags[i].tag]).responseJSON { (response) in
+                guard response.result.isSuccess else{
+                    print("Error while fetching translation data from the URLs")
+                    return
+                }
+                do{
+                    let result = try JSONDecoder().decode(translate.self, from: response.data!)
+                    print(result.trans_result.first?.dst!)
+                }catch{
+                    print("Error to decode the translation")
+                }
+            }
+        }
+    }
 }
+
 
 public extension String {
     

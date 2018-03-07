@@ -101,28 +101,8 @@ class ViewController: UIViewController {
     
     
     func downloadChineseTags(tags:[tags], completion:@escaping([String])->Void){
-        var name:String = ""
-        for tag in tags{
-            //百度翻译API
-            let baidu = BaiduTranslate()
-            if tag.confidence < 40{
-                return
-            }
-            let url = baidu.getURL(word: tag.tag)
-            
-            Alamofire.request(url, method: .get).responseJSON { (response) in
-                do{
-                    let jsonResult = try JSONDecoder().decode(translate.self, from: response.data!)
-                    name = (jsonResult.trans_result.first?.dst)!
-                    print(name)
-                    
-                }catch{
-                    print("Translation Error!")
-                }
-            }
-        }
+        
     }
-    
     func downloadTags(id:String, completion:@escaping ([String])->Void) {
         var tagsReturn = [String]()
         
@@ -139,12 +119,12 @@ class ViewController: UIViewController {
                                     return
                                 }
                                 
-
+                                
                                 tagsReturn = tags.flatMap({ dict in
-                                        if dict.confidence > 40.0{
+                                    if dict.confidence > 40.0{
                                         return dict.tag
-                                        }
-                                        return nil
+                                    }
+                                    return nil
                                     }
                                 )
                                 completion(tagsReturn)
@@ -154,7 +134,7 @@ class ViewController: UIViewController {
                             }
         }
         
-//        completion(tagsReturn)
+        //        completion(tagsReturn)
     }
     
     func downloadColors(id:String, completion:@escaping ([PhotoColor])->Void){
@@ -218,7 +198,7 @@ extension ViewController:UIImagePickerControllerDelegate{
             print("\(b.count)")
             self.progressView.progress = 0.0
             if (a.count != 0 && b.count != 0){
-            self.performSegue(withIdentifier: "segue", sender: self)
+                self.performSegue(withIdentifier: "segue", sender: self)
             }
         }
         dismiss(animated: true)
