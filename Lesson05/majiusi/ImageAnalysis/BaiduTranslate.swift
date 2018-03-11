@@ -39,6 +39,12 @@ class BaiduTranslate {
     func getCNTags(tags:[tags],level:Float,completion:@escaping ([String]) -> Void) {
         let urls = getURLsForTags(tags: tags, level: level)
         let count = urls.count
+        var returnFlags = [Bool]()
+        var flag = 0
+        for _ in 0..<count {
+            returnFlags.append(false)
+        }
+        var returnResults = [String]()
         for i in 0..<count {
             Alamofire.request(urls[i], method: .get, parameters: ["q":tags[i].tag]).responseJSON { (response) in
                 guard response.result.isSuccess else{
@@ -47,11 +53,25 @@ class BaiduTranslate {
                 }
                 do{
                     let result = try JSONDecoder().decode(translate.self, from: response.data!)
-                    print(result.trans_result.first?.dst!)
+                    let dst = result.trans_result[0].dst
+                    print(dst)
+                    returnResults.append(dst)
+                    returnFlags[i] = true
+                    for j in 0..<count {
+                        if(returnFlags[j] == false){
+                            flag += 1
+                            print(flag)
+                        }
+                    }
+                    if flag == 0 {
+                        completion(returnResults)
+                    }
+                    flag = 0
                 }catch{
                     print("Error to decode the translation")
                 }
             }
+            
         }
     }
 }

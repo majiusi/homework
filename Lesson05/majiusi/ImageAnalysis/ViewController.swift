@@ -98,11 +98,7 @@ class ViewController: UIViewController {
                             }
         }
     }
-    
-    
-    func downloadChineseTags(tags:[tags], completion:@escaping([String])->Void){
-        
-    }
+
     func downloadTags(id:String, completion:@escaping ([String])->Void) {
         var tagsReturn = [String]()
         
@@ -119,14 +115,19 @@ class ViewController: UIViewController {
                                     return
                                 }
                                 
+                                let baidu = BaiduTranslate ()
+                                baidu.getCNTags(tags: tags, level: 70.0) { (returns) in
+                                    tagsReturn = returns
+                                    completion(returns)
+                                }
                                 
-                                tagsReturn = tags.flatMap({ dict in
-                                    if dict.confidence > 40.0{
-                                        return dict.tag
-                                    }
-                                    return nil
-                                    }
-                                )
+//                                tagsReturn = tags.flatMap({ dict in
+//                                    if dict.confidence > 40.0{
+//                                        return dict.tag
+//                                    }
+//                                    return nil
+//                                    }
+//                                )
                                 completion(tagsReturn)
                                 
                             }catch{
