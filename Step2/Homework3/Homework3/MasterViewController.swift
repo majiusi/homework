@@ -77,6 +77,7 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let object = objects[indexPath.row]
         cell.label!.text = ""
+        cell.label!.textColor = UIColor.black
         cell.switchButton.setOn(false, animated: false)
         cell.label!.text = object.description
         return cell
