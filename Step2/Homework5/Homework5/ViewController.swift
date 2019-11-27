@@ -95,9 +95,10 @@ class ViewController: UIViewController {
         if let text = text1.text{
             let passcode = "20180306000131844\(text)12345678QRjrVKE2wmDirSJxRz5k".md5()
             print(passcode)
-            let url = "https://fanyi-api.baidu.com/api/trans/vip/translate?q=\(text)&from=auto&to=zh&appid=20180306000131844&salt=12345678&sign=\(passcode)"
+            let url = "https://fanyi-api.baidu.com/api/trans/vip/translate?from=auto&to=zh&appid=20180306000131844&salt=12345678"
+            let parm:Parameters = ["q":"\(text)","sign":"\(passcode)"]
             print(url)
-            Alamofire.request(url, method: .get).responseData { (response) in
+            Alamofire.request(url, method: .get, parameters: parm).responseData { (response) in
                 let decoder = JSONDecoder()
                 if let data = response.data {
                     do {
