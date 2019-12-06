@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let layout = UICollectionViewFlowLayout()
-        let calendarController = CalendarController(collectionViewLayout: layout)
+        let calendarController = CalendarController()
         let navigationController = UINavigationController(rootViewController: calendarController)
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = navigationController
